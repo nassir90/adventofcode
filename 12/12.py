@@ -43,11 +43,10 @@ tails = recursive_format(paths)
 
 numero = 0
 
-for tail in tails:
-    if tail[-3:] == 'end':
-        lolz = -2
-        for component in tail.split(","):
-            if all(c.islower() for c in component):
-                lolz += 1
-        if lolz <= 1:
-            numero += 1
+print(len([tail for tail in tails if tail[-3:] == 'end']))
+#        lolz = -2
+#        for component in tail.split(","):
+#            if all(c.islower() for c in component):
+#                lolz += 1
+#        if lolz <= 1:
+#            numero += 1
