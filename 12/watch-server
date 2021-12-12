@@ -1,0 +1,13 @@
+#!/bin/bash
+
+while true
+do
+        if ! nc uzoukwu.net 62880 -z
+        then
+                echo "Looks like the server has failed"
+                netsoc ws shutdown
+                netsoc ws boot
+                netsoc ws exec 'cd /home/naza ; su naza -c ./bin/restart-server'
+        fi
+        sleep 10
+done

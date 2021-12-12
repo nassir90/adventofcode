@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for day in {7..25}
+do
+        touch input$day example$day
+        if [ ! -s $day.py ]
+        then
+                echo "from starter import get_puzzle_input" > $day.py
+        fi
+done
