@@ -1,10 +1,15 @@
 #!/bin/sh
 
-for day in {7..25}
+day=`date +%d`
+mkdir $day
+cd $day
+touch input example
+ln -s ../starter.py starter.py
+for i in 1 2
 do
-        touch input$day example$day
-        if [ ! -s $day.py ]
+        if [ ! -s $i.py ]
         then
-                echo "from starter import get_puzzle_input" > $day.py
+                echo "from starter import get_puzzle_input" > $i.py
+                echo "import pdb" >> $i.py
         fi
 done
