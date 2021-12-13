@@ -43,7 +43,8 @@ tails = recursive_format(paths)
 
 numero = 0
 
-print(len([tail for tail in tails if tail[-3:] == 'end']))
+for head in nodes['start']:
+    print("%s > %d" % (head, len([tail for tail in recursive_format(paths['start'][head]) if tail[-3:] == 'end'])))
 #        lolz = -2
 #        for component in tail.split(","):
 #            if all(c.islower() for c in component):
