@@ -7,7 +7,8 @@ template, rules = lines[0], [rule.strip().split(' -> ') for rule in lines[2:]]
 novo_rules = { rule : result for rule, result in rules }
 printing = False
 default_frequencies = { result : 0 for rule, result in rules }
-frequency_lists = { i : {} for i in range(100)}
+until = 40
+frequency_lists = [ {} for i in range(until + 1) ]
 
 def recursive_find_values(section, remainder=39):
     if section in frequency_lists[remainder]:
@@ -35,7 +36,8 @@ def recursive_find_values(section, remainder=39):
     frequency_lists[remainder][section] = frequencies
     return frequencies
 
-frequencies = recursive_find_values(template, 40)
+frequencies = recursive_find_values(template, until)
 
 minimum = min(frequencies, key=frequencies.get)
+maximum = max(frequencies, key=frequencies.get)
 print(frequencies[maximum] - frequencies[minimum])
