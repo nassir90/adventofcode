@@ -28,29 +28,37 @@ def get_neighbors(y, x):
     return neighbors
 
 def get_offset(y, x):
+    if y == -1:
+        y += len(plot)
+    if x == -1:
+        x += len(plot)
     return y // interval + x // interval
+
+print(interval)
 
 # Using djikstra feels cheap but it is what it is.
 # At least I understand how it works now.
 def find_shortest(sy, sx, dy, dx):
-    current_risk_levels = [ [ float("inf") for x in row ] for row in plot ]
-    current_risk_levels[sy][sx] = 0
-    border = get_neighbors(sy, sx)
-    visited = [ [ False for x in row ] for row in plot ]
-    while not visited[dy][dx]:
+    current_risk_levels = [ [ [ float("inf") for x in row ] for row in plot ] for i in range(9)]
+    current_risk_levels[get_offset(sy,sx)][sy][sx] = 0
+    border = [(sy, sx)]
+    visited = [ [ [ False for x in row ] for row in plot ] for i in range(9)]
+    while not visited[get_offset(dy,dx)][dy % interval][dx % interval]:
         minimum_point = border[0]
         for y, x in border[1:]:
-            if current_risk_levels[y][x] < current_risk_levels[minimum_point[0]][minimum_point[1]]:
+            if current_risk_levels[get_offset(y,x)][y % interval][x % interval] \
+                    < current_risk_levels[get_offset(minimum_point[0], minimum_point[1])][minimum_point[0] % interval][minimum_point[1] % interval]:
                 minimum_point = (y, x)
         my, mx = minimum_point
         for ny, nx in get_neighbors(my, mx):
-            if not visited[ny][nx]:
+            if not visited[get_offset(ny,nx)][ny % interval][nx % interval]:
                 border.append((ny, nx))
-                potential_risk = current_risk_levels[my][mx] + plot[ny][nx]
-                if potential_risk < current_risk_levels[ny][nx]:
-                    current_risk_levels[ny][nx] = potential_risk
-                visited[ny][nx] = True
+                potential_risk = current_risk_levels[get_offset(my,mx)][my % interval][mx % interval] + plot[ny][nx]
+                if potential_risk < current_risk_levels[get_offset(ny,nx)][ny % interval][nx % interval]:
+                    current_risk_levels[get_offset(ny,nx)][ny % interval][nx % interval] = potential_risk
+                visited[get_offset(ny, nx)][ny % interval][nx % interval] = True
         border.remove(minimum_point)
-    print(current_risk_levels[-1][-1]) 
+            
+    print(current_risk_levels[get_offset(dy,dx)][dy % interval][dx % interval]) 
 
-find_shortest(10,10, -1, -1)
+find_shortest(0,0, -1, -1)
