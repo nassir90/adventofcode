@@ -9,32 +9,27 @@ for y in range(len(plot)):
     for x in range(len(plot[0])):
         to_add = y // interval + x // interval
         value = small_plot[y % interval][x % interval] + to_add
-        if value > 9:
-            value -= 9
+        if value > 9: value -= 9
         #print(value, end=" ")
         plot[y][x] = value
     #print()
 
 def get_neighbors(y, x):
-    neighbors = []
     if y != 0:
-        neighbors.append((y - 1, x))
+        yield (y - 1, x)
     if x != len(plot[0]) - 1:
-        neighbors.append((y, x + 1))
+        yield (y, x + 1)
     if y != len(plot) - 1:
-        neighbors.append((y + 1, x))
+        yield (y + 1, x)
     if x != 0:
-        neighbors.append((y,x-1))
-    return neighbors
+        yield (y, x-1)
 
 def get_offset(y, x):
-    if y == -1:
+    if y < 0:
         y += len(plot)
-    if x == -1:
+    if x < 0:
         x += len(plot)
     return y // interval + x // interval
-
-print(interval)
 
 # Using djikstra feels cheap but it is what it is.
 # At least I understand how it works now.
@@ -58,7 +53,6 @@ def find_shortest(sy, sx, dy, dx):
                     current_risk_levels[get_offset(ny,nx)][ny % interval][nx % interval] = potential_risk
                 visited[get_offset(ny, nx)][ny % interval][nx % interval] = True
         border.remove(minimum_point)
-            
-    print(current_risk_levels[get_offset(dy,dx)][dy % interval][dx % interval]) 
+    return current_risk_levels[get_offset(dy,dx)][dy % interval][dx % interval]
 
-find_shortest(0,0, -1, -1)
+print(find_shortest(0,0, -1, -1))
