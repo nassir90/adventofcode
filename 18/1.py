@@ -29,7 +29,6 @@ def reduce(cow):
     initial_pair = cow.copy()
     old_pair = []
     
-    print(initial_pair)
     while old_pair != initial_pair:
         index_stack = [0]
         pair_stack = [ initial_pair ]
@@ -68,7 +67,6 @@ def reduce(cow):
                         pair[to_explode] = 0
                         index_stack = [0]
                         pair_stack = [initial_pair]
-                        print(initial_pair)
                     else:
                         index_stack.append(0)
                         pair_stack.append(pair[i])
@@ -94,7 +92,6 @@ def reduce(cow):
                     pair[i] = [ math.floor(pair[i] / 2), math.ceil(pair[i] / 2) ]
                     index_stack = [0]
                     pair_stack = [initial_pair]
-                    print(str(initial_pair) + " split")
                     break
                 else:
                     index_stack[-1] += 1
@@ -105,9 +102,19 @@ def reduce(cow):
                     index_stack[-1] += 1
     return initial_pair
 
-what = [lines[0], lines[1]]
-result = reduce(what)
-for line in lines[2:]:
-    to_reduce = [ result, line ]
-    result = reduce(to_reduce)
-    print("-")
+def find_magnitude(pair):
+    magnitude = 0
+    if isinstance(pair[0], int):
+        magnitude += 3 * pair[0]
+    else:
+        magnitude += 3 * find_magnitude(pair[0])
+    if isinstance(pair[1], int):
+        magnitude += 2 * pair[1]
+    else:
+        magnitude += 2 * find_magnitude(pair[1])
+    return magnitude
+
+result = lines[0]
+for imaginary_number in lines[1:]:
+    result = reduce([result, imaginary_number])
+print(find_magnitude(result))
