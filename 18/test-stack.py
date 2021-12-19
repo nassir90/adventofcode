@@ -11,24 +11,24 @@ while xs:
                 psc = ps.copy()
                 xsc = xs.copy()
 
-                while xsc and xsc[-1] == 1:
+                while xsc and xsc[-1] == 0:
                     psc.pop()
                     xsc.pop()
                 if xsc:
-                    xsc[-1] = 1
+                    xsc[-1] = 0
                 while xsc:
-                    if xsc[-1] <= 1:
+                    if xsc[-1] >= 0 :
                         if isinstance(psc[-1][xsc[-1]], int):
-                            print("The number right of 69 is %d" % psc[-1][xsc[-1]])
+                            print("The number left of 69 is %d" % psc[-1][xsc[-1]])
                             break
                         else:
                             psc.append(psc[-1][xsc[-1]])
-                            xsc.append(0)
+                            xsc.append(1)
                     else:
                         xsc.pop()
                         psc.pop()
                         if xsc:
-                            xsc[-1] += 1
+                            xsc[-1] -= 1
 
             xs[-1] += 1
         else:

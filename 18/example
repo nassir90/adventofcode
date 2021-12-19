@@ -1,17 +1,4 @@
-[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]
-
-[0, [1,2]]
-
-We are on the right. Move to the left.
-The left is an integer, add to it.
-
-[[1,2],[1,2]]
-
-We are on the right. Move to the left.
-The left is an integer. Move into it.
-
-We are now on the right ( moving from right to left).
-The right is an integer, Add to it.
-
-
-[[0, [1, 2]], 4]
+[1,1]
+[2,2]
+[3,3]
+[4,4]
