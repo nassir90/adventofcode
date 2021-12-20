@@ -92,8 +92,6 @@ def compute_rotation(s1i, s2i):
         b[2] += restore1[2]
     return rot
 
-print(compute_rotation(1,0))
-
 for s1i in range(len(scanners) - 1):
     s1 = scanners[s1i]
     o1 = copy.deepcopy(s1)
@@ -128,7 +126,10 @@ for s1i in range(len(scanners) - 1):
                                 break
                             if b[r] == b1:
                                 c += 1
-                                lc = (b1i, bi)
+                                if c >= OVERLAP_NEEDED:
+                                    lc = (b1i, bi)
+                                if s1i == 1 and s2i == 4:
+                                    print(b[0], c)
                         if impossible:
                             break
                     if c >= OVERLAP_NEEDED:
@@ -192,18 +193,13 @@ def beaconise(index, position, rotation_stack):
         new_rotation_stack = rotation_stack + [ad[i][0]]
         for rotation in new_rotation_stack:
             for j in range(len(correct_beacons[cousins[1]])):
-                print()
-                print(correct_beacons[cousins[1]][j])
                 correct_beacons[cousins[1]][j] = derotate(correct_beacons[cousins[1]][j], rotation)
-                print(correct_beacons[cousins[1]][j])
 
         source_index = ad[i][1][0]
         destination_index = ad[i][1][1]
         
         source_position = correct_beacons[index][source_index]
         destination_position = correct_beacons[cousins[1]][destination_index]
-        
-        print(source_position, destination_position)
 
         p = [
             position[0] + source_position[0] - destination_position[0],

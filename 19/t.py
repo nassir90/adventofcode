@@ -39,9 +39,10 @@ def derotate(beacon, rotation):
 
     return beacon
 
-rots = get_rotations([1,2,3])
-for r in range(24):
-    rot = rots[r]
-    derot = derotate(rot, r)
-    print(derot)
-
+rot = get_rotations([1,2,3])[12]
+rot2 = get_rotations(rot)[5]
+print(rot2)
+rot3 = derotate(rot2, 5)
+print(rot3)
+rot4 = derotate(rot3, 12)
+print(rot4)
