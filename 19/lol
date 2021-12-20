@@ -1,0 +1,5 @@
+Create an array
+Derotate all members according to rotation stack
+Add derotated members to array
+
+For each node that is connected, do the same
