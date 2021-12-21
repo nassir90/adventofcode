@@ -25,6 +25,7 @@ for s1i in range(len(scanners) - 1):
     s1 = scanners[s1i]
     o1 = copy.deepcopy(s1)
     for b1 in s1:
+        # Objectify b
         h1 = b1.copy()
         for b in s1:
             b[0] -= h1[0]
@@ -32,14 +33,15 @@ for s1i in range(len(scanners) - 1):
             b[2] -= h1[2]
         adjacent = False
         for s2i in range(s1i + 1, len(scanners)):
-            s2 = scanners[s2i]
             if [s1i, s2i] in a:
                 continue
+            s2 = scanners[s2i]
+            o2 = copy.deepcopy(s2)
             for i in range(len(s2)):
                 s2[i] = get_rotations(s2[i])
             for r in range(24):
-                o2 = [ b[r] for b in copy.deepcopy(s2) ]
                 for b2i, b2 in enumerate(s2):
+                    # Objectify b2
                     h2 = b2[r].copy()
                     for b in s2:
                         b[r][0] -= h2[0]
@@ -55,10 +57,7 @@ for s1i in range(len(scanners) - 1):
                                 break
                             if b[r] == b1:
                                 c += 1
-                                if c >= OVERLAP_NEEDED:
-                                    lc = (b1i, bi)
-                                if s1i == 1 and s2i == 4:
-                                    print(b[0], c)
+                                lc = [b1i, bi]
                         if impossible:
                             break
                     if c >= OVERLAP_NEEDED:
@@ -67,22 +66,19 @@ for s1i in range(len(scanners) - 1):
                         ad.append([r, lc])
                         if debug: print("Scanner %d and scanner %d are adjacent with rotation %d" % (s1i, s2i, r))
                         break
-                n2 = [ b[r] for b in s2 ]
-                r2 = o2[n2.index([0,0,0])]
-                for b in n2:
-                    b[0] += r2[0]
-                    b[1] += r2[1]
-                    b[2] += r2[2]
                 if adjacent:
                     break
             for i in range(len(s2)):
                 s2[i] = s2[i][0]
-    restore1 = o1[s1.index([0,0,0])]
+            for b in s2:
+                b[0] += o2[-1][0]
+                b[1] += o2[-1][1]
+                b[2] += o2[-1][2]
     for b in s1:
-        b[0] += restore1[0]
-        b[1] += restore1[1]
-        b[2] += restore1[2]
+        b[0] += o1[-1][0]
+        b[1] += o1[-1][1]
+        b[2] += o1[-1][2]
 
 if debug: print(list(zip(a,ad)))
 
-json.dump([a,ad], open(datetime.datetime.now().strftime("%H-%M.aad"), "w"))
+json.dump([a,ad], open(datetime.datetime.now().strftime("neo-%H-%M.json"), "w"))
