@@ -29,7 +29,7 @@ def clamp_range(slave, master):
     zmax1 = clamp(zmax1, zmin2, zmax2)
     return (xmin1, xmax1), (ymin1, ymax1), (zmin1, zmax1)
 
-def get_area(r):
+def get_volume(r):
     return abs((r[0][1] - r[0][0]) * (r[1][1] - r[1][0]) * (r[2][1] - r[2][0]))
 
 # In order to add a range, check for overlaps, delete any overlaps (union) and then simply add the range to the ranges array
@@ -45,18 +45,17 @@ def delete(r):
         front = [(xmin, xmax), (ymin2, ymin), (zmin, zmax)]
         back = [(xmin, xmax), (ymax, ymax2), (zmin, zmax)]
         parts = (top, bottom, left, right, front, back)
-        new_ranges += parts if sum(get_area(part) for part in parts) != get_area(r2) else [r2]
-    return [ r for r in new_ranges if get_area(r) != 0 ]
+        new_ranges += parts if sum(get_volume(part) for part in parts) != get_volume(r2) else [r2]
 
-def calculate_area():
-    area = 0
-    for (lx, hx), (ly, hy), (lz, hz) in ranges:
-        area += abs((hx - lx) * (hy - ly) * (hz - lz))
-    return area
+def calculate_volume():
+    volume = 0
+    for (xmin, xmax), (ymin, ymax), (zmin, zmax) in ranges:
+        volume += abs((xmax - xmin) * (ymax - ymin) * (zmax - zmin))
+    return volume
 
 for command in commands:
     ranges = delete(command[1])
     if command[0] == "on":
         ranges.append(command[1])
 
-print(calculate_area())
+print(calculate_volume())
